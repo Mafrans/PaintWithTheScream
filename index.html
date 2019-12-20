@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game Engine</title>
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            overflow: hidden;
+        }
+        .hidden {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0;
+        }
+    </style>
+    <img id="image" src="https://www.w3schools.com/tags/img_the_scream.jpg" class="hidden">
+    <canvas id="game-canvas" width="800" height="600"></canvas>
+
+
+    <script src="engine.js"></script>
+    <script>
+    let canvas = $("#game-canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    var engine = new Engine($("#game-canvas"));
+    let factory = new Object(null);
+    factory.Update = function() {
+        if(Input.mouseButton(0)) {
+            console.log("click!")
+            let object = new Object($("#image"));
+            object.position = {x: Input.mousePosition().x + object.getCenterOffset().x, y: Input.mousePosition().y + object.getCenterOffset().y};
+            object.time = 0;
+            object.Start = function() {
+                this.velocity = {
+                    x: Math.random()*500+500 * Math.cos(Math.random() * 2*Math.PI),
+                    y: Math.random()*500+500 * Math.sin(Math.random() * 2*Math.PI)
+                }
+                this.drag = {
+                    x: 100,
+                    y: 100
+                }
+            }
+
+            engine.instantiate(object);
+            object = null;
+        }
+    }
+    engine.instantiate(factory);
+
+    </script>
+</body>
+
+</html>
